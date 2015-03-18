@@ -191,7 +191,9 @@ class DnsMadeEasy
     end
 
     response = http.request(request)
-    unparsed_json = response.body == "" ? "{}" : response.body
+    response.value # raise Net::HTTPServerException unless response was 2xx
+
+    unparsed_json = response.body.to_s.empty? ? "{}" : response.body
 
     JSON.parse(unparsed_json)
   end
